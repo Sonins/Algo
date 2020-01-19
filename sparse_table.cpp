@@ -1,7 +1,7 @@
 #include <iostream>
 
 #define MAX 100000
-#define LOG_MAX 17
+#define LOG_MAX 18
 typedef long long ll;
 
 /**
@@ -40,9 +40,9 @@ ll func(ll a, ll b) {
  * 즉, 이 함수를 호출하기 전에 미리 main 함수에서 초기화를 해줘야 한다.
 */
 
-void init_table() {
-    for (int j = 1; j <= LOG_MAX; j++) {
-        for (int i = 0; i < MAX; i++) {
+void init_table(int N) { // i 범위를 MAX 까지 잡으면 segmentation 오류가 나길래.. 그냥 N 까지 하는걸로 바꿨다.
+    for (int j = 1; j <= LOG_MAX - 1; j++) {
+        for (int i = 0; i < N; i++) {
             table[i][j] = func(table[i][j - 1], table[i + (1 << (j - 1))][j - 1]);
         }
     }
@@ -59,9 +59,10 @@ void init_table() {
 */
 
 ll table_query(int L, int R) {
-    ll result = __LONG_LONG_MAX__;
-
-    for (int j = LOG_MAX; j >= 0; j--) {
+    ll result = -__LONG_LONG_MAX__;
+    L--; 
+    R--;
+    for (int j = LOG_MAX - 1; j >= 0; j--) {
         if ((R - L + 1) >= (1 << j)) {
             result = func(result, table[L][j]);
             L = L + (1 << j);
@@ -89,14 +90,15 @@ int main() {
         table[i][0] = arr[i];
     }
 
-    init_table();
+    init_table(N);
     
     int M;
     cin >> M;
     
     int l, r;
     // 쿼리는 온라인 쿼리 형식으로 했다.
-    // 나중에 Mo's 같은 걸로 더 실험해 보면 좋을 듯??
+    // 나중에 오프라인 쿼리 형식으로 바꿔서 
+    // Mo's 같은 걸로 더 실험해 보면 좋을 듯??
     for (int i = 0; i < M; i++) {
         cin >> l >> r ;
         cout << table_query(l, r) << endl;
