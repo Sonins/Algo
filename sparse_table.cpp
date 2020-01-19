@@ -1,4 +1,4 @@
-#include <ios>
+#include <iostream>
 
 #define MAX 100000
 #define LOG_MAX 17
@@ -71,6 +71,36 @@ ll table_query(int L, int R) {
     return result;
 }
 
+/**
+ * 구현부, table을 어떻게 사용할지 나온다.
+*/
+
+using namespace std;
+
 int main() {
+    int N;
+    cin >> N;
+
+    ll arr[MAX];
+
+    // 아래 사항처럼 미리 table[i][0] 를 arr[i]로 초기화 해줘야 한다.
+    for (int i = 0; i < N; i++) {
+        cin >> arr[i];
+        table[i][0] = arr[i];
+    }
+
+    init_table();
     
+    int M;
+    cin >> M;
+    
+    int l, r;
+    // 쿼리는 온라인 쿼리 형식으로 했다.
+    // 나중에 Mo's 같은 걸로 더 실험해 보면 좋을 듯??
+    for (int i = 0; i < M; i++) {
+        cin >> l >> r ;
+        cout << table_query(l, r) << endl;
+    }
+
+    return 0;
 }
