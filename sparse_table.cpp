@@ -3,6 +3,7 @@
 #define MAX 100000
 #define LOG_MAX 17
 typedef long long ll;
+
 /**
  * Sparse Table
  * function이 결합법칙이 성립하고 ( F(a, F(b, c)) == F(F(a, b), c) )
@@ -43,4 +44,31 @@ void init_table() {
             table[i][j] = func(table[i][j - 1], table[i + (1 << (j - 1))][j - 1]);
         }
     }
+}
+
+/**
+ * L ~ R 의 구간을
+ * L ~ (L + 2^j - 1), (L + 2^j) ~ (L + 2^j + 2^(j`) - 1), ... ,(L + 2^j + 2^(j`) + 2^(j``) + ...) ~ R로
+ * 잘개 쪼개서 쿼리를 한다.
+ * 
+ * 모든 정수는 2^k1 + 2^k2 + .. + 2^kj 로 표현 가능하므로 (이진수 생각하면 편할 듯)
+ * L ~ R 의 구간 또한 위와 같이 쪼갤 수 있다.
+ * 구간은 R - L + 1 과 같다.
+*/
+
+ll table_query(int L, int R) {
+    ll result = __LONG_LONG_MAX__;
+
+    for (int j = LOG_MAX; j >= 0; j--) {
+        if ((R - L + 1) >= (1 << j)) {
+            result = func(result, table[L][j]);
+            L = L + (1 << j);
+        }
+    }
+    
+    return result;
+}
+
+int main() {
+    
 }
