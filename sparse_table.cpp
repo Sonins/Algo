@@ -25,6 +25,8 @@ typedef long long ll;
 
 ll table[MAX][LOG_MAX];
 
+// func는 최댓값을 구하는 것으로 했다.
+
 ll func(ll a, ll b) {
     if (a > b)
         return a;
@@ -65,7 +67,7 @@ ll table_query(int L, int R) {
             L = L + (1 << j);
         }
     }
-    
+
     return result;
 }
 
