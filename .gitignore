@@ -1,2 +1,6 @@
 # Build Genarated File
 *.out
+*.class
+
+# Java Development Kit
+JDK/
