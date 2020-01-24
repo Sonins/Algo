@@ -23,17 +23,24 @@ int main(int argc, const char* argv[]) {
     string cmd;
     cmd = "pwd";
     string CurrentPath = getStdoutCommand(cmd.c_str());
-    cmd = "ls " + CurrentPath.substr(0, CurrentPath.size() - 1) + "/BOJ";
+    cmd = "ls " + CurrentPath; 
 
     string ls_result = getStdoutCommand(cmd.c_str());
     char _delimiter = '\n';
     string problem;
     size_t pos;
     FILE* fp = fopen("problemList", "r");
+    string buffer;
+    vector<string> unsolved_problem;
+    while (fscanf(fp, "%s,", &buffer) != false) {
+	if (s[0] == "#" || s[0] == "\"") 
+	    continue;
+	unsolved_problem.push_back(buffer);
+    }
     while ((pos = ls_result.find(_delimiter)) != string::npos) {
         problem = ls_result.substr(0, pos);
-        
         ls_result.erase(0, pos + sizeof(_delimiter));
+	
     }
 
     fclose(fp);
