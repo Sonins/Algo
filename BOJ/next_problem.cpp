@@ -87,14 +87,13 @@ int main(int argc, const char* argv[]) {
      * I store folder name by problem number that I solved.
     */
     
-    cmd = "ls " + CurrentPath;
+    cmd = "ls " + CurrentPath.substr(0, CurrentPath.size() - 1) + "/problem";
     string ls_result = getStdoutCommand(cmd.c_str());
 	string problem;
     size_t pos;
     char _delimiter = '\n';
     while ((pos = ls_result.find(_delimiter)) != string::npos) {
         problem = ls_result.substr(0, pos);
-        cout << problem << endl;
         is_solved.find(stoi(problem.c_str()))->second = true;
         ls_result.erase(0, pos + sizeof(_delimiter));
     }
@@ -114,6 +113,7 @@ int main(int argc, const char* argv[]) {
         if (!(is_solved.find(problemlist[i])->second)) {
             cout << cate << endl;
             cout << problemlist[i] << endl;
+            break;
         }
     }
     
