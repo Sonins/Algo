@@ -13,7 +13,10 @@
  * file where problem to be solved is stored : problemList
 */
 
+#define ls_OPTION "-I \"*.out\" -I \"*.cpp\" -I \"problemList\" " 
+
 using namespace std;
+
 
 /**
  * getStdoutComand(const char*) :
@@ -87,7 +90,8 @@ int main(int argc, const char* argv[]) {
      * I store folder name by problem number that I solved.
     */
     
-    cmd = "ls -I \"*.out\" \"*.cpp\"" + CurrentPath.substr(0, CurrentPath.size() - 1) + "/problem";
+    string option = ls_OPTION;
+    cmd = "ls " + option + CurrentPath;
     string ls_result = getStdoutCommand(cmd.c_str());
 	string problem;
     size_t pos;
