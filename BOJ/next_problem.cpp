@@ -87,7 +87,7 @@ int main(int argc, const char* argv[]) {
      * I store folder name by problem number that I solved.
     */
     
-    cmd = "ls " + CurrentPath.substr(0, CurrentPath.size() - 1) + "/problem";
+    cmd = "ls -I \"*.out\" \"*.cpp\"" + CurrentPath.substr(0, CurrentPath.size() - 1) + "/problem";
     string ls_result = getStdoutCommand(cmd.c_str());
 	string problem;
     size_t pos;
