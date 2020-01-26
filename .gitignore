@@ -2,5 +2,5 @@
 *.out
 *.class
 
-# Java Development Kit
-JDK/
+# Exception
+!BOJ/next.out
