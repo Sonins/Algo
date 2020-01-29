@@ -117,6 +117,15 @@ int main(int argc, const char* argv[]) {
         if (!(is_solved.find(problemlist[i])->second)) {
             cout << cate << endl;
             cout << problemlist[i] << endl;
+            cmd = "mkdir " + to_string(problemlist[i]);
+            system(cmd.c_str());
+            cmd = "touch " + to_string(problemlist[i]) + "/code.cpp";
+            system(cmd.c_str());
+            option = argv[1];
+            if (option == "-v" || option == "--vscode") {
+                cmd = "code " + to_string(problemlist[i]) + "/code.cpp";
+                system(cmd.c_str());
+            }
             break;
         }
     }
