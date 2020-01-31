@@ -121,10 +121,12 @@ int main(int argc, const char* argv[]) {
             system(cmd.c_str());
             cmd = "touch " + to_string(problemlist[i]) + "/code.cpp";
             system(cmd.c_str());
-            option = argv[1];
-            if (option == "-v" || option == "--vscode") {
-                cmd = "code " + to_string(problemlist[i]) + "/code.cpp";
-                system(cmd.c_str());
+            if (argv[1] != NULL) {
+                option = argv[1];
+                if (option == "-v" || option == "--vscode") {
+                    cmd = "code " + to_string(problemlist[i]) + "/code.cpp";
+                    system(cmd.c_str());
+                }
             }
             break;
         }
