@@ -14,6 +14,7 @@
 */
 
 #define ls_OPTION "-I \"*.out\" -I \"*.cpp\" -I \"problemList\" " 
+#define WEBROWSER "chromium-browser"
 
 using namespace std;
 
@@ -109,6 +110,7 @@ int main(int argc, const char* argv[]) {
     
     // print
     string cate;
+    string browser;
     size_t index = 0;
     for (int i = 0; i < problemlist.size(); i++) {
         if (problemlist[i] == category[index].second) {
@@ -128,6 +130,10 @@ int main(int argc, const char* argv[]) {
                     system(cmd.c_str());
                 }
             }
+            // opening url to next problem using web browser.
+            browser = WEBROWSER;
+            cmd = browser + " boj.kr/" + to_string(problemlist[i]); + " &";
+            system(cmd.c_str());
             break;
         }
     }
