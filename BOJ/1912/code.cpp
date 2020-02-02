@@ -1,4 +1,4 @@
-#include <iostream>
+#include <cstdio>
 #include <algorithm>
 #define MAX 100010
 using namespace std;
@@ -6,12 +6,12 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     int N;
-    cin >> N;
+    scanf("%d", &N);
 
     int arr[MAX];
     int dp[MAX] = {0};
     for (size_t i = 0; i < N; i++)
-        cin >> arr[i + 1];
+        scanf("%d", &arr[i + 1]);
     
     dp[1] = arr[1];
     int _max = arr[1];
@@ -24,7 +24,7 @@ int main(int argc, char const *argv[])
         _max = max(_max, dp[i]);
     }
     
-    cout << _max << endl;
+    printf("%d", _max);
     
 
     return 0;
