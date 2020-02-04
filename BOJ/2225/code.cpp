@@ -23,14 +23,11 @@ int main() {
     
     for (size_t i = 2; i <= N; i++) {
         for (size_t j = 3; j <= K; j++) {
-            for (size_t k = 0; k <= i; k++)
-            {
+            for (size_t k = 0; k <= i; k++){
                 dp[i][j] += dp[k][j - 1];
                 dp[i][j] %= DIV;
             }
-            
         }
-        
     }
 
     cout << dp[N][K] << endl;
