@@ -6,3 +6,6 @@
 # Shell Code
 code --install-extension .vscode/cpptools-linux.vsix
 
+# Restart VSCode
+cd ..
+code Algo
