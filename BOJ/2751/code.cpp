@@ -1,33 +1,64 @@
 #include <stdio.h>
-#define MAX (int)1e6 + 10
+#define MAX 1000010
 using namespace std;
 
-bool _minus[MAX];
-bool _plus[MAX];
+int sorted_arr[MAX];
+int arr[MAX];
+
+void merge(int start, int mid, int end) {
+    int left = start;
+    int right = mid + 1;
+    int index = start;
+    while (left <= mid && right <= end) {
+        if (arr[left] < arr[right]) {
+            sorted_arr[index] = arr[left];
+            left++;
+            index++;
+        }
+        else {
+            sorted_arr[index] = arr[right];
+            right++;
+            index++;
+        };
+    }
+
+    for (size_t i = left; i <= mid; i++) {
+        sorted_arr[index++] = arr[i];
+    }
+
+    for (size_t i = right; i <= end; i++) {
+        sorted_arr[index++] = arr[i];
+    }
+
+    for (size_t i = start; i <= end; i++)
+        arr[i] = sorted_arr[i];
+    
+}
+
+void mergesort(int start, int end) {
+    int mid;
+    if (start < end) {
+        mid = (start + end) / 2;
+        mergesort(start, mid);
+        mergesort(mid + 1, end);
+        merge(start, mid, end);
+    }
+}
 
 int main() {
     int N;
     scanf("%d", &N);
-    int num;
-    for (int i = 0; i < N; i++)
-    {   
-        scanf("%d", &num);
-        if (num < 0)
-            _minus[-1 * num] = true;
-        if (num >= 0)
-            _plus[num] = true;
-    }
-    for (int i = MAX - 1; i > 0; i--)
+    
+    for (size_t i = 0; i < N; i++)
+        scanf("%d", &arr[i + 1]);
+    
+    mergesort(1, N);
+    
+    for (size_t i = 0; i < N; i++)
     {
-        if (_minus[i])
-            printf("%d\n", -1 * i);
+        printf("%d ", arr[i + 1]);
     }
-    for (int i = 0; i < MAX; i++)
-    {
-        if (_plus[i])
-            printf("%d\n", i);
-    }
+    printf("\n");
     
     return 0;
-    
 }
