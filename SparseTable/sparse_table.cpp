@@ -60,7 +60,7 @@ void init_table(int N) { // i 범위를 MAX 까지 잡으면 segmentation 오류
 
 ll table_query(int L, int R) {
     ll result = -__LONG_LONG_MAX__;
-    L--; 
+    L--; // index가 0부터 시작하므로 그것에 맞췄다.
     R--;
     for (int j = LOG_MAX - 1; j >= 0; j--) {
         if ((R - L + 1) >= (1 << j)) {
