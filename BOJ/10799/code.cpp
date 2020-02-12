@@ -1,28 +1,25 @@
-#include <iostream>
-#include <stack>
-#include <string>
+#include <stdio.h>
+#define MAX 100010
 using namespace std;
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    stack<bool> s;
-    string str;
+    int top = 0;
+    char str[MAX];
     int answer = 0;
-    cin >> str;
+    scanf("%s", str);
     
-    for (size_t i = 0; i < str.size(); i++)
-    {
+    for (size_t i = 0; str[i] != '\0'; i++) {
         if (str[i] == '(') {
-            s.push(true);
+            top++;
         } else if (str[i - 1] == '(') {
-            s.pop();
-            answer += s.size();
+            top--;
+            answer += top;
         } else {
-            s.pop();
+            top--;
             answer++;
         }
     }
     
-    cout << answer << '\n';
+    printf("%d\n", answer);
     return 0;
 }
