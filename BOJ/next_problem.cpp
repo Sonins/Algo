@@ -103,11 +103,6 @@ int main(int argc, const char* argv[]) {
         ls_result.erase(0, pos + sizeof(_delimiter));
     }
     
-    // The reason doing below is that there is some problem that I solved before making git reposit.
-    for (int i = problemlist.size() - 1; i > 0; i--) {
-        is_solved.find(problemlist[i - 1])->second |= is_solved.find(problemlist[i])->second;
-    }
-    
     // print
     string cate;
     string browser;
