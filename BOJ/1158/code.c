@@ -14,15 +14,16 @@ typedef struct _n {
 
 
 node* init_list(int n) {
-    node * ptr;
+    node * ptr = NULL;
     MALLOC(ptr, sizeof(node));
     node * first = ptr;
-    for (size_t i = 1; i <= n; i++) {
+    for (size_t i = 1; i < n; i++) {
         MALLOC(ptr->next, sizeof(node));
         ptr->next->before = ptr;
-        ptr = ptr->next;
         ptr->key = i;
+        ptr = ptr->next;
     }
+    ptr->key = n;
     ptr->next = first;
     first->before = ptr;
     return first;
@@ -30,7 +31,7 @@ node* init_list(int n) {
 
 node* pop(int k, node* ptr) {
     node* pt = ptr;
-    for (size_t i = 0; i < k; i++) {
+    for (size_t i = 1; i < k; i++) {
         pt = pt->next;
     }
     pt->before->next = pt->next;
@@ -44,18 +45,17 @@ int main() {
     scanf("%d", &N);
     scanf("%d", &K);
     node* ptr = init_list(N);
-
-    for (size_t i = 0; i < N; i++)
-    {
-        printf("%d ", ptr->key);
-        ptr = ptr->next;
-    }
-    
-
+    node* temp;
+    printf("<");
     for (size_t i = 0; i < N; i++) {
-        ptr = pop(3, ptr);
-        printf("%d\n", ptr->key);
+        ptr = pop(K, ptr);
+        printf("%d", ptr->key);
+        temp = ptr->next;
         free(ptr);
+        ptr = temp;
+        if (i < N - 1)
+            printf(", ");
     }
+    printf(">\n");
     return 0;
 }
