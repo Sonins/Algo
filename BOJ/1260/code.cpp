@@ -51,18 +51,18 @@ int main() {
         visited[i] = false;
     
     q.push(V);
+    visited[V] = true;
     while (!q.empty()) {
         cur = q.front();
         q.pop();
-        if (!visited[cur]) {
-            cout << cur << " ";
-            visited[cur] = true;
-        }
-
+        cout << cur << " ";
+        
         for (size_t i = 0; i < edges[cur].size(); i++) {   
-            if (!visited[edges[cur][i]])
+            if (!visited[edges[cur][i]]) {
                 q.push(edges[cur][i]);
-        }
+                visited[edges[cur][i]] = true;
+            }
+        } 
     }
     cout << '\n';
     return 0;
