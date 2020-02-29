@@ -16,7 +16,6 @@ int main() {
     cout.tie(NULL);
     int T;
     int N;
-    int x;
     int cnt = 0;
     cin >> T;
     for (size_t t = 0; t < T; t++) {
@@ -27,10 +26,8 @@ int main() {
             visited[i] = false;
         }
 
-        for (size_t i = 1; i <= N; i++) {
-            cin >> x;
-            g[i] = x;
-        }
+        for (size_t i = 1; i <= N; i++)
+            cin >> g[i];
 
         for (size_t i = 1; i <= N; i++) {
             if (!visited[i]) {
