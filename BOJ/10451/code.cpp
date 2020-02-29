@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 using namespace std;
 int g[1010];
 bool visited[1010];
