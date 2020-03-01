@@ -5,7 +5,7 @@
 
 # Shell Code
 code --install-extension .vscode/cpptools-linux.vsix
+currentDir=$(pwd)
 
 # Restart VSCode
-cd ..
-code Algo
+code ${currentDir}
