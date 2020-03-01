@@ -1,5 +1,8 @@
-# Build Genarated File
+# Build Generated File
 *.out
 *.class
+
+# Debug Generated File
+code
 
 # Exception
