@@ -3,4 +3,3 @@
 *.class
 
 # Exception
-!BOJ/next.out
