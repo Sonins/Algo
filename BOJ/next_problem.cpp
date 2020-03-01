@@ -1,23 +1,22 @@
+#include <array>
+#include <cstring>
 #include <iostream>
-#include <string>
+#include <map>
+#include <memory>
 #include <sstream>
 #include <stdexcept>
-#include <array>
-#include <memory>
-#include <map>
+#include <string>
 #include <vector>
-#include <cstring>
 
 /**
  * Print what problem in boj.kr should be solved next.
  * file where problem to be solved is stored : problemList
 */
 
-#define ls_OPTION "-I \"*.out\" -I \"*.cpp\" -I \"problemList\" " 
+#define ls_OPTION "-I \"next*\" -I \"*.out\" -I \"*.cpp\" -I \"problemList\" -I \"*.sh\""
 #define WEBROWSER "chromium-browser"
 
 using namespace std;
-
 
 /**
  * getStdoutComand(const char*) :
@@ -28,7 +27,7 @@ using namespace std;
 
 string getStdoutCommand(const char* cmd) {
     string data;
-    FILE * fp;
+    FILE* fp;
     array<char, 256> buffer;
     unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
     if (!pipe) {
@@ -40,14 +39,17 @@ string getStdoutCommand(const char* cmd) {
 }
 
 int main(int argc, const char* argv[]) {
-    
-    // Getting current directory.
-    string cmd;
-    cmd = "pwd";
-    string CurrentPath = getStdoutCommand(cmd.c_str());
+    // Getting current Directory
+
+    string CurrentPath = argv[0];
+
+    while (CurrentPath.back() != '/')
+        CurrentPath.pop_back();
 
     // Parsing file(problemList) data into string filedata.
-    unique_ptr<FILE, decltype(&fclose)> fp(fopen("problemList", "r"), fclose);
+    string listPath = CurrentPath + "problemList";
+
+    unique_ptr<FILE, decltype(&fclose)> fp(fopen(listPath.c_str(), "r"), fclose);
     if (!fp) {
         throw runtime_error("fopen(problemList)_failed");
     }
@@ -55,18 +57,18 @@ int main(int argc, const char* argv[]) {
     array<char, 256> buffer;
     while (fgets(buffer.data(), buffer.size(), fp.get()) != nullptr)
         filedata += buffer.data();
-    
+
     // Tokenizing file data by '\n' to processing data line by line.
     string token;
     map<int, bool> is_solved;
     vector<int> problemlist;
-    vector< pair<string, int> > category;
+    vector<pair<string, int> > category;
     bool is_first_problem = false;
     istringstream iss(filedata);
 
-    while(getline(iss, token, '\n')) {
+    while (getline(iss, token, '\n')) {
         if (token[0] == '\"' || token[0] == '\n')
-        // Ignore title and blank line.
+            // Ignore title and blank line.
             continue;
         if (token[0] == '#') {
             category.push_back(make_pair(token, 0));
@@ -82,7 +84,6 @@ int main(int argc, const char* argv[]) {
             problemlist.push_back(stoi(token.c_str()));
             is_solved.insert(make_pair(stoi(token.c_str()), false));
         }
-            
     }
 
     /**
@@ -90,11 +91,11 @@ int main(int argc, const char* argv[]) {
      * The reason ls can be used in this job is
      * I store folder name by problem number that I solved.
     */
-    
+
     string option = ls_OPTION;
-    cmd = "ls " + option + CurrentPath;
+    string cmd = "ls " + CurrentPath + " " + option;
     string ls_result = getStdoutCommand(cmd.c_str());
-	string problem;
+    string problem;
     size_t pos;
     char _delimiter = '\n';
     while ((pos = ls_result.find(_delimiter)) != string::npos) {
@@ -102,7 +103,7 @@ int main(int argc, const char* argv[]) {
         is_solved.find(stoi(problem.c_str()))->second = true;
         ls_result.erase(0, pos + sizeof(_delimiter));
     }
-    
+
     // print
     string cate;
     string browser;
@@ -127,12 +128,12 @@ int main(int argc, const char* argv[]) {
             }
             // opening url to next problem using web browser.
             browser = WEBROWSER;
-            cmd = browser + " boj.kr/" + to_string(problemlist[i]); + " &";
+            cmd = browser + " boj.kr/" + to_string(problemlist[i]);
+            +" &";
             system(cmd.c_str());
             break;
         }
     }
-    
 
     return 0;
 }
