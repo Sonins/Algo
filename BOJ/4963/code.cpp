@@ -1,52 +1,46 @@
-#include <iostream>
-#define MAX 60
+#include <stdio.h>
+#define MAX 51
 using namespace std;
 
 bool g[MAX][MAX];
-bool visit[MAX][MAX];
 const int x[] = {1, 1, 0, -1, -1, -1, 0, 1};
 const int y[] = {0, -1, -1, -1, 0, 1, 1, 1};
 
 void DFS_visit(int i, int j);
 
 void DFS(int i, int j) {
-    visit[i][j] = true;
+    g[i][j] = false;
     for (size_t t = 0; t < 8; t++)
         DFS_visit(i + x[t], j + y[t]);
     
 }
 
 void DFS_visit(int i, int j) {
-    if (i > 0 && i < MAX && j > 0 && j < MAX && g[i][j] && !visit[i][j])
+    if (i > 0 && i < MAX && j > 0 && j < MAX && g[i][j])
         DFS(i, j);
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
     int w, h;
-    cin >> w >> h;
+    scanf("%d %d", &w, &h);
     int cnt;
     while (w != 0 || h != 0) {
         cnt = 0;
         for (size_t i = 1; i <= h; i++) {
-            for (size_t j = 1; j <= w; j++) {
-                cin >> g[i][j];
-                visit[i][j] = false;
-            }
+            for (size_t j = 1; j <= w; j++)
+                scanf("%1d", &g[i][j]);
         }
 
         for (size_t i = 1; i <= h; i++) {
             for (size_t j = 1; j <= w; j++) {
-                if (!visit[i][j] && g[i][j]) {
+                if (g[i][j]) {
                     DFS(i, j);
                     cnt++;
                 }
             }
         }
 
-        cout << cnt << '\n';
-        cin >> w >> h;
+        printf("%d\n", cnt);
+        scanf("%d %d", &w, &h);
     }
 }
