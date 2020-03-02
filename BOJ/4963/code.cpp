@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #define MAX 60
 using namespace std;
 
