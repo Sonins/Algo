@@ -4,19 +4,16 @@ using namespace std;
 
 bool g[MAX][MAX];
 bool visit[MAX][MAX];
+const int x[] = {1, 1, 0, -1, -1, -1, 0, 1};
+const int y[] = {0, -1, -1, -1, 0, 1, 1, 1};
 
 void DFS_visit(int i, int j);
 
 void DFS(int i, int j) {
     visit[i][j] = true;
-    DFS_visit(i + 1, j);      // ↑
-    DFS_visit(i + 1, j - 1);  // ↖
-    DFS_visit(i, j - 1);      // ←
-    DFS_visit(i - 1, j - 1);  // ↙
-    DFS_visit(i - 1, j);      // ↓
-    DFS_visit(i - 1, j + 1);  // ↘
-    DFS_visit(i, j + 1);      // →
-    DFS_visit(i + 1, j + 1);  // ↗
+    for (size_t t = 0; t < 8; t++)
+        DFS_visit(i + x[t], j + y[t]);
+    
 }
 
 void DFS_visit(int i, int j) {
