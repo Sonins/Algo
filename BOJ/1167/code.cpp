@@ -1,12 +1,33 @@
+#include <cstring>
 #include <iostream>
-#include <stack>
 #include <vector>
 #define MAX 100010
 
 using namespace std;
 
 vector<pair<int, int> > e[MAX];
-int cu_weight[MAX];
+bool visit[MAX];
+
+int farnode, far;
+
+void DFS(int node, int cost) {
+    if (visit[node])
+        return;
+
+    visit[node] = true;
+
+    if (cost > far) {
+        farnode = node;
+        far = cost;
+    }
+    int next;
+    int next_cost;
+    for (size_t i = 0; i < e[node].size(); i++) {
+        next = e[node][i].first;
+        next_cost = cost + e[node][i].second;
+        DFS(next, next_cost);
+    }
+}
 
 int main() {
     ios::sync_with_stdio(false);
@@ -26,47 +47,14 @@ int main() {
         }
     }
 
-    stack<int> s;
-    s.push(1);
-    cu_weight[1] = 1;
-    int max_weight = 0, max_node;
-    int cur;
-    while (!s.empty()) {
-        cur = s.top();
-        s.pop();
-        for (size_t i = 0; i < e[cur].size(); i++) {
-            if (!cu_weight[e[cur][i].first]) {
-                s.push(e[cur][i].first);
-                cu_weight[e[cur][i].first] = cu_weight[cur] + e[cur][i].second;
-                if (max_weight < cu_weight[e[cur][i].first]) {
-                    max_weight = cu_weight[e[cur][i].first];
-                    max_node = e[cur][i].first;
-                }
-            }
-        }
-    }
+    DFS(1, 0);
 
-    s.push(max_node);
-    max_weight = 0;
+    memset(visit, false, sizeof(visit));
+    far = 0;
 
-    for (size_t i = 0; i < MAX; i++)
-        cu_weight[i] = 0;
+    DFS(farnode, 0);
 
-    cu_weight[max_node] = 1;
-    while (!s.empty()) {
-        cur = s.top();
-        s.pop();
-        for (size_t i = 0; i < e[cur].size(); i++) {
-            if (!cu_weight[e[cur][i].first]) {
-                s.push(e[cur][i].first);
-                cu_weight[e[cur][i].first] = cu_weight[cur] + e[cur][i].second;
-                if (max_weight < cu_weight[e[cur][i].first]) {
-                    max_weight = cu_weight[e[cur][i].first];
-                    max_node = e[cur][i].first;
-                }
-            }
-        }
-    }
-    cout << max_weight - 1 << '\n';
+    cout << far << '\n';
+
     return 0;
 }
