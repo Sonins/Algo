@@ -115,9 +115,9 @@ int main(int argc, const char* argv[]) {
         if (!(is_solved.find(problemlist[i])->second)) {
             cout << cate << endl;
             cout << problemlist[i] << endl;
-            cmd = "mkdir " + to_string(problemlist[i]);
+            cmd = "mkdir " + CurrentPath + to_string(problemlist[i]);
             system(cmd.c_str());
-            cmd = "touch " + to_string(problemlist[i]) + "/code.cpp";
+            cmd = "touch " + CurrentPath + to_string(problemlist[i]) + "/code.cpp";
             system(cmd.c_str());
             if (argv[1] != NULL) {
                 option = argv[1];
