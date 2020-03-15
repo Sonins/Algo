@@ -128,8 +128,7 @@ int main(int argc, const char* argv[]) {
             }
             // opening url to next problem using web browser.
             browser = WEBROWSER;
-            cmd = browser + " boj.kr/" + to_string(problemlist[i]);
-            +" &";
+            cmd = browser + " boj.kr/" + to_string(problemlist[i]) + " &";
             system(cmd.c_str());
             break;
         }
