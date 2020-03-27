@@ -14,17 +14,22 @@ int main() {
     for (size_t i = 0; i < s.size(); i++) {
         arr[i + 1] = s[i] - '0';
         if (arr[i + 1] < 0 || arr[i + 1] >= 10) {
-            cout << '0' << endl;
+            cout << 0 << endl;
             return 0;
         }
     }
 
     if (arr[1] == 0) {
-        cout << '0' << endl;
+        cout << 0 << endl;
         return 0;
     }
 
     dp[1] = 1;
+
+    if (s.size() >= 2 && arr[1] > 2 && arr[2] == 0) {
+        cout << 0 << endl;
+        return 0;
+    }
 
     if (arr[2] == 0)
         dp[2] = 1;
@@ -36,6 +41,11 @@ int main() {
     for (size_t i = 3; i <= s.size(); i++) {
 
         if (arr[i - 1] + arr[i] == 0) {
+            cout << 0 << endl;
+            return 0;
+        }
+
+        if (arr[i - 1] > 2 && arr[i] == 0) {
             cout << 0 << endl;
             return 0;
         }
