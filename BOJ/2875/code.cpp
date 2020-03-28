@@ -14,7 +14,7 @@ int main() {
     } else {
         M -= N / 2;
         group += N / 2;
-        N -= N / 2;
+        N -= N / 2 * 2;
         K -= N + M;
     }
     N = 0;
