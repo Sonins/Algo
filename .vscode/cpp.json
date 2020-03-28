@@ -1,0 +1,7 @@
+{
+	"Std Namespace": {
+		"prefix": ["std"],
+		"body": ["using namespace std;"],
+		"description": "Namespace std snippet"
+	}
+}
