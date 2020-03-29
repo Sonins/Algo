@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#define SCORE 568909150
 using namespace std;
 int main() {
     int comb = 1;
@@ -19,6 +18,8 @@ int main() {
     };
     long long sum = 328;
     vector<int> wrong;
+    int SCORE;
+    cin >> SCORE;
     while (comb < (1 << 11)) {
 
         for (size_t i = 0; i < 11; i++) {
