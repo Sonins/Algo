@@ -14,7 +14,6 @@
 */
 
 #define ls_OPTION "-I \"next*\" -I \"*.out\" -I \"*.cpp\" -I \"problemList\" -I \"*.sh\""
-#define WEBROWSER "chromium-browser"
 
 using namespace std;
 
@@ -127,8 +126,7 @@ int main(int argc, const char* argv[]) {
                 }
             }
             // opening url to next problem using web browser.
-            browser = WEBROWSER;
-            cmd = browser + " boj.kr/" + to_string(problemlist[i]) + " &";
+            cmd = "xdg-open http://boj.kr/" + to_string(problemlist[i]) + " &";
             system(cmd.c_str());
             break;
         }
