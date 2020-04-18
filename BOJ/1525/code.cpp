@@ -1,107 +1,61 @@
 #include <iostream>
+#include <unordered_map>
 #include <queue>
 #include <vector>
-#include <map>
 using namespace std;
 
-const int power_10[9] = {1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000};
-
-bool arr_same(vector<int> src, const int dest[9]) {
-    for (size_t i = 0; i < 9; i++) {
-        if (src[i] != dest[i])
-            return false;
-    }
-    return true;
-}
-
-int to_idx(vector<int> arr) {
-    int idx = 0;
-    for (size_t i = 0; i < 9; i++)
-        idx += arr[i] * power_10[i];
-    return idx;
-}
-
+const int power_10[9] = {100000000, 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1};
 
 int main() {
     ios::sync_with_stdio(false);
-    vector<int> arr(9);
-    map<int, bool> visit;
+    int start = 0, num;
+    unordered_map<int, bool> visit;
 
-    for (size_t i = 0; i < 9; i++)
-        cin >> arr[i];
+    for (size_t i = 0; i < 9; i++) {
+        cin >> num;
+        start += num * power_10[i];
+    }
 
-    const int dest[9] = {1, 2, 3, 4, 5, 6, 7, 8, 0};
+    const int dest = 123456780;
 
-    if (arr_same(arr, dest)) {
+    if (start == dest) {
         cout << 0 << '\n';
         return 0;
     }
 
-    queue<vector<int> > q;
-    vector<int> cur;
-    vector<int> temp;
+    queue<int> q;
+    int cur, temp;
     int zero_idx, qsize, cnt = 0;
-    q.push(arr);
-    visit[to_idx(arr)] = true;
+    int offset[4] = {-1, 1, 3, -3};
+    int pos;
+    q.push(start);
+    visit[start] = true;
     while (!q.empty()) {
         qsize = q.size();
         while (qsize--) {
             cur = q.front();
             q.pop();
             for (size_t i = 0; i < 9; i++) {
-                if (!cur[i])
+                if (!((cur / power_10[i]) % 10))
                     zero_idx = i;
             }
 
-            if (zero_idx % 3 <= 1) {
-                temp = cur;
-                swap(temp[zero_idx], temp[zero_idx + 1]);
-                if (arr_same(temp, dest)) {
-                    cout << cnt + 1 << '\n';
-                    return 0;
-                }
-                if (!visit[to_idx(temp)]) {
-                    q.push(temp);
-                    visit[to_idx(temp)] = true;
-                }
-            }
+            for (size_t i = 0; i < 4; i++) {
+                pos = zero_idx + offset[i];
+                if (pos < 9 && pos >= 0 && (pos % 3 == zero_idx % 3 || pos / 3 == zero_idx / 3)) {
+                    temp = cur;
+                    temp += ((temp / power_10[pos]) % 10) * power_10[zero_idx];
+                    temp -= ((temp / power_10[pos]) % 10) * power_10[pos];
 
-            if (zero_idx % 3 >= 1) {
-                temp = cur;
-                swap(temp[zero_idx - 1], temp[zero_idx]);
-                if (arr_same(temp, dest)) {
-                    cout << cnt + 1 << '\n';
-                    return 0;
-                }
-                if (!visit[to_idx(temp)]) {
-                    q.push(temp);
-                    visit[to_idx(temp)] = true;
-                }
-            }
+                    if (temp == dest) {
+                        cout << cnt + 1 << '\n';
+                        return 0;
+                    }
 
-            if (zero_idx / 3 <= 1) {
-                temp = cur;
-                swap(temp[zero_idx], temp[zero_idx + 3]);
-                if (arr_same(temp, dest)) {
-                    cout << cnt + 1 << '\n';
-                    return 0;
-                }
-                if (!visit[to_idx(temp)]) {
-                    q.push(temp);
-                    visit[to_idx(temp)] = true;
-                }
-            }
-
-            if (zero_idx / 3 >= 1) {
-                temp = cur;
-                swap(temp[zero_idx - 3], temp[zero_idx]);
-                if (arr_same(temp, dest)) {
-                    cout << cnt + 1 << '\n';
-                    return 0;
-                }
-                if (!visit[to_idx(temp)]) {
-                    q.push(temp);
-                    visit[to_idx(temp)] = true;
+                    if (!visit[temp]) {
+                        q.push(temp);
+                        visit[temp] = true;
+                    }
                 }
             }
         }
