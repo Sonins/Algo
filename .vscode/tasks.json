@@ -10,8 +10,18 @@
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],
-            "options": {
-                "cwd": "/usr/bin"
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "windows": {
+                "command": "C:/MinGW/bin/g++.exe"
+            },
+            "linux": {
+                "options": {
+                    "cwd": "/usr/bin"
+                }
             }
         }
     ],

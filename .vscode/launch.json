@@ -23,7 +23,11 @@
                 }
             ],
             "preLaunchTask": "g++ build active file",
-            "miDebuggerPath": "/usr/bin/gdb"
+            "windows": {
+                "miDebuggerPath": "C:/MinGW/bin/gdb.exe",
+                "program": "${fileDirname}/${fileBasenameNoExtension}.exe",
+                "externalConsole": false
+            },
         }
     ]
 }
