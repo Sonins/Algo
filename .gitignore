@@ -1,8 +1,10 @@
 # Build Generated File
 *.out
 *.class
+*.exe
 
 # Debug Generated File
 code
 
 # Exception
+!next_problem.exe
