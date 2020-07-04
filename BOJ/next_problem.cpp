@@ -8,12 +8,16 @@
 #include <string>
 #include <vector>
 
+#if __WIN32 || __WIN64
+#define PATHSEP "\\"
+#else
+#define PATHSEP ''
+#endif
+
 /**
  * Print what problem in boj.kr should be solved next.
  * file where problem to be solved is stored : problemList
 */
-
-#define ls_OPTION "-I \"next*\" -I \"*.out\" -I \"*.cpp\" -I \"problemList\" -I \"*.sh\""
 
 using namespace std;
 
@@ -37,25 +41,46 @@ string getStdoutCommand(const char* cmd) {
     return data;
 }
 
-int main(int argc, const char* argv[]) {
-    // Getting current Directory
+/** 
+ * getCurrentWorkingDir :
+ * Return path of directory that contain this code file.
+ * Reason for this is because I put problemList in same directory as this code file.
+ */
 
-    string CurrentPath = argv[0];
+string getCurrentDir(const char* filepath) {
+    string dirpath = filepath;
+    #ifdef __WIN32 || __WIN64
+    char sep = '\\';
+    #else
+    char sep = '/';
+    #endif
+    size_t i = dirpath.rfind(sep, dirpath.length());
+    if (i != string::npos)
+        return dirpath.substr(0, i);
+    return "";
+}
 
-    while (CurrentPath.back() != '/')
-        CurrentPath.pop_back();
-
-    // Parsing file(problemList) data into string filedata.
-    string listPath = CurrentPath + "problemList";
-
-    unique_ptr<FILE, decltype(&fclose)> fp(fopen(listPath.c_str(), "r"), fclose);
+// Return string that contain data of file whose path is filepath.
+string getFileData(string filepath) {
+    unique_ptr<FILE, decltype(&fclose)> fp(fopen("C:\\Users\\gmlrh\\Desktop\\Son\\Algo\\BOJ\\problemList", "r"), fclose);
+    array<char, 256> buffer;
     if (!fp) {
         throw runtime_error("fopen(problemList)_failed");
     }
-    string filedata;
-    array<char, 256> buffer;
+    string fdata;
+    
     while (fgets(buffer.data(), buffer.size(), fp.get()) != nullptr)
-        filedata += buffer.data();
+        fdata += buffer.data();
+    return fdata;
+}
+
+int main(int argc, const char* argv[]) {
+    // Getting current Directory
+    string CurrentPath = getCurrentDir(argv[0]);
+
+    // Parsing file(problemList) data into string filedata.
+    string listPath = CurrentPath + PATHSEP + "problemList";
+    string filedata = getFileData(listPath);
 
     // Tokenizing file data by '\n' to processing data line by line.
     string token;
@@ -86,13 +111,19 @@ int main(int argc, const char* argv[]) {
     }
 
     /**
-     * Mark solved problem using 'ls' command.
+     * Mark solved problem using directory explore command
+     * (window : dir, linux : ls)
      * The reason ls can be used in this job is
      * I store folder name by problem number that I solved.
     */
 
-    string option = ls_OPTION;
+    #ifdef __linux__
+    string option = "-I \"next*\" -I \"*.out\" -I \"*.cpp\" -I \"problemList\" -I \"*.sh\"";
     string cmd = "ls " + CurrentPath + " " + option;
+    #elif __WIN32 || __WIN64
+    string option;
+    string cmd = "dir /B /AD " + CurrentPath;
+    #endif
     string ls_result = getStdoutCommand(cmd.c_str());
     string problem;
     size_t pos;
@@ -114,9 +145,13 @@ int main(int argc, const char* argv[]) {
         if (!(is_solved.find(problemlist[i])->second)) {
             cout << cate << endl;
             cout << problemlist[i] << endl;
-            cmd = "mkdir " + CurrentPath + to_string(problemlist[i]);
+            cmd = "mkdir " + CurrentPath + PATHSEP + to_string(problemlist[i]);
             system(cmd.c_str());
+            #ifdef __linux__
             cmd = "touch " + CurrentPath + to_string(problemlist[i]) + "/code.cpp";
+            #elif __WIN32 || __WIN64
+            cmd = "type NUL > " + CurrentPath + PATHSEP + to_string(problemlist[i]) + "\\code.cpp";
+            #endif
             system(cmd.c_str());
             if (argv[1] != NULL) {
                 option = argv[1];
@@ -126,7 +161,11 @@ int main(int argc, const char* argv[]) {
                 }
             }
             // opening url to next problem using web browser.
+            #ifdef __linux__
             cmd = "xdg-open http://boj.kr/" + to_string(problemlist[i]) + " &";
+            #elif __WIN32 || __WIN64
+            cmd = "explorer \"http://boj.kr/" + to_string(problemlist[i]) + "\"";
+            #endif
             system(cmd.c_str());
             break;
         }
