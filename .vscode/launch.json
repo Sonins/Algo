@@ -26,7 +26,7 @@
             "windows": {
                 "miDebuggerPath": "C:/MinGW/bin/gdb.exe",
                 "program": "${fileDirname}/${fileBasenameNoExtension}.exe",
-                "externalConsole": false
+                "externalConsole": true
             },
         }
     ]
