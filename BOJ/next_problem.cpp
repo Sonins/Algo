@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <unistd.h>
 
 /**
  * Print what problem in boj.kr should be solved next.
@@ -41,17 +42,11 @@ string getStdoutCommand(const char* cmd) {
  * Reason for this is because I put problemList in same directory as this code file.
  */
 
-string getCurrentDir(const char* filepath) {
-    string dirpath = filepath;
-    #ifdef __WIN32 || __WIN64
-    char sep = '\\';
-    #else
-    char sep = '/';
-    #endif
-    size_t i = dirpath.rfind(sep, dirpath.length());
-    if (i != string::npos)
-        return dirpath.substr(0, i);
-    return "";
+string getCurrentDir() {
+    array<char, FILENAME_MAX> buf;
+    getcwd(buf.data(), buf.size());
+    string dirpath = buf.data();
+    return dirpath;
 }
 
 // Return string that contain data of file whose path is filepath.
@@ -70,12 +65,18 @@ string getFileData(string filepath) {
 
 int main(int argc, const char* argv[]) {
     // Getting current Directory
-    string CurrentPath = getCurrentDir(argv[0]);
+    string CurrentPath = getCurrentDir();
     #ifdef __linux__
-    CurrentPath.push_back('/');
+    char sep = '/';
     #elif __WIN32 || __WIN64
-    CurrentPath.push_back('\\');
+    char sep = '\\';
     #endif
+
+    if (!CurrentPath.substr(CurrentPath.length() - 4, 4).compare("Algo")) {
+        CurrentPath.push_back(sep);
+        CurrentPath.append("BOJ");
+    }
+    CurrentPath.push_back(sep);
 
     // Parsing file(problemList) data into string filedata.
     string listPath = CurrentPath + "problemList";
