@@ -8,12 +8,6 @@
 #include <string>
 #include <vector>
 
-#if __WIN32 || __WIN64
-#define PATHSEP "\\"
-#else
-#define PATHSEP ''
-#endif
-
 /**
  * Print what problem in boj.kr should be solved next.
  * file where problem to be solved is stored : problemList
@@ -62,7 +56,7 @@ string getCurrentDir(const char* filepath) {
 
 // Return string that contain data of file whose path is filepath.
 string getFileData(string filepath) {
-    unique_ptr<FILE, decltype(&fclose)> fp(fopen("C:\\Users\\gmlrh\\Desktop\\Son\\Algo\\BOJ\\problemList", "r"), fclose);
+    unique_ptr<FILE, decltype(&fclose)> fp(fopen(filepath.c_str(), "r"), fclose);
     array<char, 256> buffer;
     if (!fp) {
         throw runtime_error("fopen(problemList)_failed");
@@ -77,9 +71,14 @@ string getFileData(string filepath) {
 int main(int argc, const char* argv[]) {
     // Getting current Directory
     string CurrentPath = getCurrentDir(argv[0]);
+    #ifdef __linux__
+    CurrentPath.push_back('/');
+    #elif __WIN32 || __WIN64
+    CurrentPath.push_back('\\');
+    #endif
 
     // Parsing file(problemList) data into string filedata.
-    string listPath = CurrentPath + PATHSEP + "problemList";
+    string listPath = CurrentPath + "problemList";
     string filedata = getFileData(listPath);
 
     // Tokenizing file data by '\n' to processing data line by line.
@@ -135,6 +134,7 @@ int main(int argc, const char* argv[]) {
     }
 
     // print
+    
     string cate;
     string browser;
     size_t index = 0;
@@ -145,12 +145,12 @@ int main(int argc, const char* argv[]) {
         if (!(is_solved.find(problemlist[i])->second)) {
             cout << cate << endl;
             cout << problemlist[i] << endl;
-            cmd = "mkdir " + CurrentPath + PATHSEP + to_string(problemlist[i]);
+            cmd = "mkdir " + CurrentPath + to_string(problemlist[i]);
             system(cmd.c_str());
             #ifdef __linux__
             cmd = "touch " + CurrentPath + to_string(problemlist[i]) + "/code.cpp";
             #elif __WIN32 || __WIN64
-            cmd = "type NUL > " + CurrentPath + PATHSEP + to_string(problemlist[i]) + "\\code.cpp";
+            cmd = "type NUL > " + CurrentPath + to_string(problemlist[i]) + "\\code.cpp";
             #endif
             system(cmd.c_str());
             if (argv[1] != NULL) {
