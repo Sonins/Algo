@@ -3,7 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/usr/include/x86_64-linux-gnu/c++/6"
             ],
             "defines": [
                 "_DEBUG",
@@ -14,6 +15,24 @@
             "cStandard": "gnu11",
             "cppStandard": "gnu++14",
             "intelliSenseMode": "clang-x86"
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "/usr/include/",
+                "/usr/local/include/",
+                "/usr/include/c++",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "/usr/bin/g++",
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "${default}"
         }
     ],
     "version": 4
