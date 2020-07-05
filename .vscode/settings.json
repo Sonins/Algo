@@ -1,4 +1,5 @@
 {
+    "terminal.integrated.shellArgs.windows": ["/K", "chcp 65001"],
     "[cpp]": {
         "editor.defaultFormatter": "ms-vscode.cpptools",
         "editor.formatOnPaste": true
