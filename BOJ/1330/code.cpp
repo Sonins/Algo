@@ -5,12 +5,11 @@ using namespace std;
 int main() {
     int A, B;
     cin >> A >> B;
-    if (A < B) {
+    if (A < B)
         cout << "<" << endl;
-    } else if (A == B) {
+    else if (A == B)
         cout << "==" << endl;
-    } else {
+    else
         cout << ">" << endl;
-    }
     return 0;
 }
