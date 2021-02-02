@@ -91,7 +91,7 @@ int main(int argc, const char* argv[]) {
     istringstream iss(filedata);
 
     while (getline(iss, token, '\n')) {
-        if (token[0] == '\"' || token[0] == '\n')
+        if (token[0] == '\"' || token[0] == '\n' || token[0] == '\r')
             // Ignore title and blank line.
             continue;
         if (token[0] == '#') {
@@ -118,7 +118,7 @@ int main(int argc, const char* argv[]) {
     */
 
     #ifdef __linux__
-    string option = "-I \"next*\" -I \"*.out\" -I \"*.cpp\" -I \"problemList\" -I \"*.sh\"";
+    string option = "-I \"*problem*\" -I \"*.sh\" -I \"*.js\"";
     string cmd = "ls " + CurrentPath + " " + option;
     #elif __WIN32 || __WIN64
     string option;
