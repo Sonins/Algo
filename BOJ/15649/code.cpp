@@ -25,6 +25,7 @@ int main() {
             for (auto i : seq)
                 cout << i << " ";
             cout << "\n";
+            continue;
         }
 
         memset(visit, 0, 10 * sizeof(bool));

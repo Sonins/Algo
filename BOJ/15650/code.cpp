@@ -22,6 +22,7 @@ int main() {
                 cout << v[i] << ' ';
             }
             cout << "\n";
+            continue;
         }
 
         int limit = 0;
