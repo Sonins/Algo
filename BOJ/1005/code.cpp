@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <stack>
-#include <set>
+#include <vector>
 #include <string.h>
 
 #define MAX 100010
@@ -27,10 +27,10 @@ int main() {
 
         int parent, child;
 
-        set<int> edge[MAX];
+        vector<int> edge[MAX];
         for (int i = 0; i < K; i++) {
             cin >> parent >> child;
-            edge[parent].insert(child);
+            edge[parent].push_back(child);
             dep[child]++;
         }
         cin >> W;
